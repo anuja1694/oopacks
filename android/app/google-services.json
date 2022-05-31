@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "966283118728",
+    "project_id": "oopacks-85b18",
+    "storage_bucket": "oopacks-85b18.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:966283118728:android:4fcc2582f1cb07344db73d",
+        "android_client_info": {
+          "package_name": "com.oopacks"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "966283118728-mb5pva5ur2l73d9n568mapncshj7d2ca.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4d1hw64z9Jblnbcen1p-XZar5dIERQG8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "966283118728-mb5pva5ur2l73d9n568mapncshj7d2ca.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
