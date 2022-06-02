@@ -88,7 +88,7 @@ export default function Signup({ navigation }) {
                 <View style={styles.itemContainer3}>
                     <Text style={styles.text3}>Password</Text>
                     <TextInput style={styles.inputview}
-                        placeholder='userid'
+                        placeholder='password'
                         placeholderTextColor='grey'
                         value={password}
                         onChangeText={onChangePasswordHandler}
@@ -97,7 +97,7 @@ export default function Signup({ navigation }) {
                 <View style={styles.itemContainer4}>
                     <Text style={styles.text3}>Confirm Password</Text>
                     <TextInput style={styles.inputview}
-                        placeholder='userid'
+                        placeholder='confirmpassword'
                         placeholderTextColor='grey'
                         value={password}
                         onChangeText={onChangePasswordHandler}
