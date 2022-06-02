@@ -1,95 +1,122 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { View, Text, StyleSheet, ImageBackground, Image, Alert, TouchableHighlight } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 import Icon from 'react-native-vector-icons/Ionicons';
 import auth from '@react-native-firebase/auth';
+import axios from "axios";
 
 
 // pending=> border color focused
+const baseUrl = "https://reqres.in";
 
-export default function Signup ({navigation}) {
+export default function Signup({ navigation }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
-    const Signup = () => {
-        if (email != '' && password != '') {
-            auth().createUserWithEmailAndPassword(email, password).then((res) => {
-                console.log("response", res)
-                Alert.alert("user created successfully");
-            })
-                .catch((error) => {
-                    console.log("error", error)
-                    Alert.alert(error.message)
 
-                })
+    const onChangeEmailHandler = (email) => {
+        setEmail(email);
+    };
+
+    const onChangeNameHandler = (name) => {
+        setName(name);
+    };
+
+    const onChangePasswordHandler = (password) => {
+        setPassword(password);
+    };
+
+
+    const onSubmitFormHandler = async (event) => {
+        if (!email.trim() || !password.trim()) {
+          alert("Password or Email is invalid");
+          return;
         }
-        else {
-            Alert.alert("Both are mandatory")
+        setIsLoading(true);
+        try {
+          const response = await axios.post(`${baseUrl}/api/user`, {
+            email,
+            password,
+          });
+          if (response.status === 201) {
+            alert(` You have created: ${JSON.stringify(response.data)}`);
+            setIsLoading(false);
+            setPassword('');
+            setEmail('');
+          } else {
+            throw new Error("An error has occurred");
+          }
+        } catch (error) {
+          alert("An error has occurred");
+          setIsLoading(false);
         }
-    }
+      };
+
 
     return (
-            <View style={styles.container}>
-                <View style={{ flexDirection: 'row', marginTop: 60 }}>
-                    <Icon name="md-arrow-back-sharp" 
+        <View style={styles.container}>
+            <View style={{ flexDirection: 'row', marginTop: 60 }}>
+                <Icon name="md-arrow-back-sharp"
                     onPress={() => navigation.navigate('Signin')}
                     size={25} color='white' style={{ marginLeft: 40, marginRight: 100 }} />
-                    <Text style={styles.text}>Signup</Text>
-                </View>
-                <View style={styles.subcontainer}>
-                    <View style={styles.itemContainer}>
-                        <Text style={styles.text3}>Name</Text>
-                        <TextInput style={styles.inputview}
-                            placeholder='Name'
-                            value={name}
-                            autoCapitalize="none"
-                            onChangeText={setName}
-                            placeholderTextColor='grey'
-                            maxLength={15}></TextInput>
-                    </View>
-                    <View style={styles.itemContainer2}>
-                        <Text style={styles.text3}>Email</Text>
-                        <TextInput style={styles.inputview}
-                            placeholder='Email'
-                            placeholderTextColor='grey'
-                            keyboardType='email-address'
-                            autoCapitalize="none"
-                            onChangeText={setEmail}
-                            maxLength={25}></TextInput>
-                    </View>
-                    <View style={styles.itemContainer3}>
-                        <Text style={styles.text3}>Password</Text>
-                        <TextInput style={styles.inputview}
-                            placeholder='userid'
-                            placeholderTextColor='grey'
-                            value={password}
-                            onChangeText={setPassword}
-                            maxLength={15} secureTextEntry={true}></TextInput>
-                    </View>
-                    <View style={styles.itemContainer4}>
-                        <Text style={styles.text3}>Confirm Password</Text>
-                        <TextInput style={styles.inputview}
-                            placeholder='userid'
-                            placeholderTextColor='grey'
-                            value={password}
-                            onChangeText={setPassword}
-                            maxLength={15} secureTextEntry={true}></TextInput>
-                    </View>
-                    <TouchableHighlight
-                        style={styles.buttonview}
-                        underlayColor='transparent'
-                        onPress={Signup}>
-                        <Text style={styles.buttontext}>Signup</Text></TouchableHighlight>
-                    <View style={{ flexDirection: 'row', marginTop: 80, marginLeft: 140 }}>
-                        <Text>You have a account?</Text>
-                        <Text style={{fontWeight:'bold', color:'black'}} onPress={() => navigation.navigate('Signin')}>Signin</Text>
-                    </View>
-                </View>
-
+                <Text style={styles.text}>Signup</Text>
             </View>
-        )
-    }
+            <View style={styles.subcontainer}>
+                <View style={styles.itemContainer}>
+                    <Text style={styles.text3}>Name</Text>
+                    <TextInput style={styles.inputview}
+                        placeholder='Name'
+                        value={name}
+                        autoCapitalize="none"
+                        onChangeText={onChangeNameHandler}
+                        placeholderTextColor='grey'
+                        maxLength={15}></TextInput>
+                </View>
+                <View style={styles.itemContainer2}>
+                    <Text style={styles.text3}>Email</Text>
+                    <TextInput style={styles.inputview}
+                        placeholder='Email'
+                        value={email}
+                        placeholderTextColor='grey'
+                        keyboardType='email-address'
+                        autoCapitalize="none"
+                        onChangeText={onChangeEmailHandler}
+                        maxLength={25}></TextInput>
+                </View>
+                <View style={styles.itemContainer3}>
+                    <Text style={styles.text3}>Password</Text>
+                    <TextInput style={styles.inputview}
+                        placeholder='userid'
+                        placeholderTextColor='grey'
+                        value={password}
+                        onChangeText={onChangePasswordHandler}
+                        maxLength={15} secureTextEntry={true}></TextInput>
+                </View>
+                <View style={styles.itemContainer4}>
+                    <Text style={styles.text3}>Confirm Password</Text>
+                    <TextInput style={styles.inputview}
+                        placeholder='userid'
+                        placeholderTextColor='grey'
+                        value={password}
+                        onChangeText={onChangePasswordHandler}
+                        maxLength={15} secureTextEntry={true}></TextInput>
+                </View>
+                <TouchableHighlight
+                    style={styles.buttonview}
+                    underlayColor='transparent'
+                    onPress={onSubmitFormHandler}>
+                    <Text style={styles.buttontext}>Signup</Text></TouchableHighlight>
+                <View style={{ flexDirection: 'row', marginTop: 80, marginLeft: 140 }}>
+                    <Text>You have a account?</Text>
+                    <Text style={{ fontWeight: 'bold', color: 'black' }} onPress={() => navigation.navigate('Signin')}>Signin</Text>
+                </View>
+            </View>
+
+        </View>
+    )
+}
 
 const styles = StyleSheet.create({
     container: {

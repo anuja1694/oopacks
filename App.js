@@ -6,6 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Signin from './src/Signin';
 import Signup from './src/Signup';
 import Home from './src/Home';
+import Forgot from './src/Forgot';
 
 
 
@@ -14,6 +15,7 @@ const Stack = createStackNavigator();
 function MyStack({ navigation }) {
   return (
     <Stack.Navigator>
+      <Stack.Screen name="Forgot" component={Forgot} options={{ headerShown: false }} />
       <Stack.Screen name="Signin" component={Signin} options={{ headerShown: false }} />
       <Stack.Screen name="Signup" component={Signup} options={{ headerShown: false }} />
       <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
@@ -33,5 +35,5 @@ export default function App() {
 
 const styles = StyleSheet.create({
 
- 
+
 })

@@ -7,45 +7,45 @@ import axios from "axios";
 // pending=> border color focused
 const baseUrl = "https://reqres.in";
 
-export default function Signin({ navigation }) {
+export default function Forgot({ navigation }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-
-
-    const onChangePasswordHandler = (password) => {
-        setPassword(password);
-    };
 
     const onChangeEmailHandler = (email) => {
         setEmail(email);
     };
 
-    const onSubmitFormHandler = async (event) => {
+    const onChangePasswordHandler = (password) => {
+        setPassword(password);
+    };
+
+    const onSubmitFormHandler = (event) => {
         if (!email.trim() || !password.trim()) {
-            alert("Password or Email is invalid");
-            return;
+          alert("Name or Email is invalid");
+          return;
         }
         setIsLoading(true);
-        try {
-            const response = await axios.post(`${baseUrl}/api/user/login`, {
-                email,
-                password,
-            });
-            if (response.status === 201) {
-                alert(` You have logedin: ${JSON.stringify(response.data)}`);
-                setIsLoading(false);
-                setPassword('');
-                setEmail('');
-                navigation.navigate('Home')
-
+    
+        const configurationObject = {
+          url: `${baseUrl}/api/users/4`,
+          method: "PUT",
+          data: { email, password },
+        };
+    
+        axios(configurationObject)
+          .then((response) => {
+            if (response.status === 200) {
+              alert(` You have updated: ${JSON.stringify(response.data)}`);
+              setIsLoading(false);
+              setFullName("");
+              setEmail("");
             } else {
-                throw new Error("An error has occurred");
+              throw new Error("An error has occurred");
             }
-        } catch (error) {
-            alert("An error has occurred");
-            setIsLoading(false);
-        }
+          })
+          .catch((error) => {
+        });
     };
 
     return (
@@ -53,7 +53,7 @@ export default function Signin({ navigation }) {
             <Text style={styles.text}>OOPACKS</Text>
             <View style={styles.subcontainer}>
                 <View style={{ alignItems: 'center' }}>
-                    <Text style={styles.subtext}>Login</Text>
+                    <Text style={styles.subtext}>Reset Password</Text>
                 </View>
                 <View style={styles.itemContainer}>
                     <Text style={styles.text3}>Email</Text>
@@ -68,30 +68,23 @@ export default function Signin({ navigation }) {
                     ></TextInput>
 
                 </View>
-
-
                 <View style={styles.itemContainer2}>
                     <Text style={styles.text3}>Password</Text>
                     <TextInput style={styles.inputview}
-                        placeholder='Password'
-                        value={password}
+                        placeholder='userid'
                         placeholderTextColor='grey'
-                        autoCapitalize="none"
-                        maxLength={15} secureTextEntry={true}
+                        value={password}
                         onChangeText={onChangePasswordHandler}
-                    ></TextInput>
-
+                        maxLength={15} secureTextEntry={true}></TextInput>
                 </View>
 
                 <TouchableHighlight
                     style={styles.buttonview}
                     underlayColor='transparent'
                     onPress={onSubmitFormHandler}>
-                    <Text style={styles.buttontext}>Login</Text></TouchableHighlight>
-                <Text style={{ fontWeight: 'bold', color: 'black', marginTop: 30, marginLeft: 140 }} onPress={() => navigation.navigate('Forgot')}>Forgot Password?</Text>
-                <View style={{ flexDirection: 'row', marginTop: 30, marginLeft: 120 }}>
-                    <Text>Don't have an account?</Text>
-                    <Text style={{ fontWeight: 'bold', color: 'black' }} onPress={() => navigation.navigate('Signup')}>Signup</Text>
+                    <Text style={styles.buttontext}>Reset</Text></TouchableHighlight>
+                <View style={{ flexDirection: 'row', marginTop: 40, marginLeft: 180 }}>
+                    <Text style={{ fontWeight: 'bold', color: 'black' }} onPress={() => navigation.navigate('Signin')}>Signin</Text>
                 </View>
             </View>
 
